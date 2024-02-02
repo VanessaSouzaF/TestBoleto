@@ -1,5 +1,4 @@
 // Controllers/BancoController.cs
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 
 [Authorize]
 [ApiController]
@@ -16,11 +16,10 @@ public class BancoController : ControllerBase
     private readonly ApplicationContext _context;
     private readonly IMapper _mapper;
 
-
     public BancoController(ApplicationContext context, IMapper mapper)
     {
-        _mapper = mapper;
         _context = context;
+        _mapper = mapper;
     }
 
     // GET: api/Banco
@@ -41,27 +40,29 @@ public class BancoController : ControllerBase
             return NotFound();
         }
 
-        var bancoDTO = _mapper.Map<BancoDTO>(banco);
-
-        return Ok(bancoDTO);
+        return banco;
     }
     
     // POST: api/Banco
     [HttpPost]
-    public async Task<ActionResult<Banco>> AdicionarBanco([FromBody] Banco banco)
+    public async Task<ActionResult<Banco>> AdicionarBanco([FromBody] BancoDTO bancoDTO)
     {
         // Verifica se o modelo é válido
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
+        // Mapeia o DTO para a entidade Banco
+        var banco = _mapper.Map<Banco>(bancoDTO);
 
         // Adiciona o banco ao contexto e salva as alterações
         _context.Bancos.Add(banco);
         await _context.SaveChangesAsync();
+        
+        // Mapeia a entidade Banco de volta para DTO
+        var bancoCriadoDTO = _mapper.Map<BancoDTO>(banco);
 
         // Retorna a resposta com o objeto criado
-        return CreatedAtAction(nameof(AdicionarBanco), new { id = banco.Id }, banco);
-
+        return CreatedAtAction(nameof(AdicionarBanco), new { id = banco.Id }, bancoCriadoDTO);
     }
 }

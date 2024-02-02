@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  teste-boleto:
+    build: 
+      context: "./TesteBoleto"
+      dockerfile: "./Dockerfile"
+    image: teste-boleto
+    container_name: teste-boleto
+    hostname: teste-boleto
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5080:80"
+      - "5443:443"
+
+  postgres:
+    image: postgres:14.1-alpine
+    container_name: postgres-x
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5431:5432'
+    volumes: 
+      - data:/var/lib/postgresql/data
+
+  pgadmin4:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "teste@boleto.com"
+      PGADMIN_DEFAULT_PASSWORD: "PgAdmin2024!"
+      PGADMIN_MAX_CONTENT_LENGTH: "268435456"
+    ports:
+      - "15431:80"
+
+volumes:
+  data:
+    driver: local

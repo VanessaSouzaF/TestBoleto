@@ -1,10 +1,11 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using TesteBoleto.TesteBoleto.Mappings;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,10 +60,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("thmpv-77d6f-94376-8hgkg-vrdrq"))
         };
     });
-
-builder.Services.AddAutoMapper(typeof(EntiDtoProfile));
-
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddAutoMapper(typeof(IStartup));
 
 var app = builder.Build();
 

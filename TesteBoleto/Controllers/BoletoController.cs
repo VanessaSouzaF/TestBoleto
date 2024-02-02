@@ -1,11 +1,9 @@
 // Controllers/BoletoController.cs
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
-
 
 [Authorize]
 [ApiController]
@@ -13,12 +11,10 @@ using System.Threading.Tasks;
 public class BoletoController : ControllerBase
 {
     private readonly ApplicationContext _context;
-    private readonly IMapper _mapper;
 
-    public BoletoController(ApplicationContext context, IMapper mapper)
+    public BoletoController(ApplicationContext context)
     {
-         _mapper = mapper; 
-         _context = context;
+        _context = context;
     }
 
     // POST: api/Boleto
@@ -54,9 +50,6 @@ public class BoletoController : ControllerBase
             boleto.Valor += boleto.Valor * banco.PercentualJuros;
         }
 
-       var boletoDTO = _mapper.Map<BoletoDTO>(boleto);
-
-        return Ok(boletoDTO);
+        return boleto;
     }
 }
-

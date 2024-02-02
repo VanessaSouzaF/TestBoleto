@@ -1,10 +1,15 @@
-// BancoDTO.cs
+// DTOs/BancoDTO.cs
+
+using System.ComponentModel.DataAnnotations;
+
 public class BancoDTO
 {
-    public int Id { get; set; }
-    public string NomeDoBanco { get; set; }
-    //public string CodigoDoBanco { get; set; }
-    public decimal PercentualDeJuros { get; set; }
-
-    // Adicione outras propriedades conforme necessário
+    [Required]
+    public string NomeBanco { get; set; }
+    
+    [Required]
+    public string CodigoBanco { get; set; }
+    
+    [Required]
+    public decimal PercentualJuros { get; set; }
 }

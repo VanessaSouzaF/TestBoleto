@@ -21,5 +21,5 @@ public class Boleto
     public int BancoId { get; set; }
 
     // Relacionamento com o Banco
-    // public Banco Banco { get; set; }
+    public Banco Banco { get; set; }
 }
